@@ -13,7 +13,7 @@ import(
 
 const MaxReapCnts = 65535
 
-type portPool struct {
+type Pool struct {
 	MaxNums     int
 	ActiveNums  int
 	baseNumber  int
@@ -24,8 +24,8 @@ type portPool struct {
 	sync.Mutex
 }
 
-func NewPool(max_nums, base_number, max_number int) *portPool{
-	pool := &portPool{
+func NewPool(max_nums, base_number, max_number int) *Pool{
+	pool := &Pool{
 		MaxNums:    max_nums,
 		baseNumber: base_number,
 		MaxNumber:  max_number,
@@ -39,7 +39,7 @@ func NewPool(max_nums, base_number, max_number int) *portPool{
 	return pool
 }
 
-func (p *portPool)reapPort() {
+func (p *Pool)reapPort() {
 
 	if p.baseNumber > p.MaxNumber {
 		panic("error args")
@@ -71,7 +71,7 @@ func (p *portPool)reapPort() {
 	//fmt.Println("end-")
 }
 
-func (p *portPool)listenUdp(port int) {
+func (p *Pool)listenUdp(port int) {
 	addr, err := net.ResolveUDPAddr("udp", "0.0.0.0:" + strconv.Itoa(port))
 	if err != nil {
 		//fmt.Println(":",err)
@@ -105,7 +105,7 @@ func (p *portPool)listenUdp(port int) {
 	p.get <- struct{}{}
 }
 
-func (p *portPool)Get() int {
+func (p *Pool)Get() int {
 
 	p.Lock()
 	defer p.Unlock()
@@ -124,7 +124,7 @@ func (p *portPool)Get() int {
 }
 
 //user to ensure that port is available
-func (p *portPool)Put(port int) {
+func (p *Pool)Put(port int) {
 
 	p.Lock()
 	defer p.Unlock()
