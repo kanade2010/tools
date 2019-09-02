@@ -40,8 +40,8 @@ type Latency struct {
 	
 	//calculate the total Latency and average Latency
 	average time.Duration
-	total 	time.Duration
-	cnts	int64
+	Total 	time.Duration
+	Cnts	int64
 }
 
 /*func New() *Latency {
