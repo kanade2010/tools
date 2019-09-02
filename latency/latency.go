@@ -40,7 +40,7 @@ type Latency struct {
 	
 	//calculate the total Latency and average Latency
 	average time.Duration
-	Total 	time.Duration
+	total 	time.Duration
 	Cnts	int64
 }
 
@@ -48,7 +48,7 @@ type Latency struct {
 	return &Latency{
 		MethodColor: methodColor,
 		TagColor:    tagColor,
-		cnts:		 0,
+		Cnts:		 0,
 	}
 }*/
 
@@ -56,7 +56,7 @@ func New(tag, method string) *Latency {
 	return &Latency{
 		MethodColor: methodColor,
 		TagColor:    tagColor,
-		cnts:		 0,
+		Cnts:		 0,
 		Tag:		 tag,
 		Method:		 method,
 	}
@@ -66,7 +66,7 @@ func NewWhithMethodColor(tag, method string, color string) *Latency {
 	return &Latency{
 		MethodColor: color,
 		TagColor:    tagColor,
-		cnts:		 0,
+		Cnts:		 0,
 		Tag:		 tag,
 		Method:		 method,
 	}
@@ -100,7 +100,7 @@ func (f *Latency)Start() {
 
 func (f *Latency)End() string {
 
-	f.cnts++
+	f.Cnts++
 	f.end = time.Now()
 	f.Latency = f.end.Sub(f.start)
 	f.total += f.Latency
@@ -115,19 +115,19 @@ func (f *Latency)End() string {
 
 // get the total and average Latency
 func (f *Latency)Total() string {
-	//fmt.Println(f.total, ":",f.cnts)
-	if (f.cnts == 0) {
+	//fmt.Println(f.total, ":",f.Cnts)
+	if (f.Cnts == 0) {
 		f.average = 0
 	} else {
-		f.average = time.Duration(int64(f.total)/(f.cnts))
+		f.average = time.Duration(int64(f.total)/(f.Cnts))
 	}
-	//f.average = time.Duration(int64(f.total)/(f.cnts))
-	//fmt.Println(f.total, ":",f.cnts,":",f.average)
+	//f.average = time.Duration(int64(f.total)/(f.Cnts))
+	//fmt.Println(f.total, ":",f.Cnts,":",f.average)
 
 	return fmt.Sprintf("%s [%s-total] %s %v | %s %19v %s | %s %13v %s | %s %13v %s | %s %-8s %s \n",
 		f.TagColor, f.Tag, resetColor,
 		f.end.Format("2006/01/02 - 15:04:05"),
-		green, f.cnts, resetColor,
+		green, f.Cnts, resetColor,
 		cyan, f.total, resetColor,
 		red, f.average, resetColor,
 		f.MethodColor, f.Method, resetColor,
